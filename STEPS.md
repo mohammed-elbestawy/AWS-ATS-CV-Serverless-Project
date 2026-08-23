@@ -170,17 +170,21 @@ Deployed to both EC2 instances via EC2 Instance Connect, running as a `systemd` 
 
 ![Systemd service running](screenshots/15-systemd.png)
 
-## Step 16 — End-to-End Test
+## Step 16 — ✅ End-to-End Test
 
-- ✅ Target group reached **Healthy** status
-- ✅ Opened ALB DNS name in browser
-- ✅ Generated a CV successfully via the form
-- ✅ Ran JD analyzer against a real job description → received match score + missing keywords
+1. Opened the ALB DNS name in the browser.
+2. Filled in the form with sample details and generated a CV — got a success message with a download link.
+3. Pasted a job description ("Cloud Security Operations") and checked the match score.
 
-![Target group healthy](screenshots/16-target-healthy.png)
+![JD match result — score and missing keywords](screenshots/16-fulltest.png)
+![CV generation form filled and submitted](screenshots/16-cv-form-filled.png)
 
-![Full end-to-end test result](screenshots/16-fulltest.png)
 
-![CV_Generator](screenshots/16-CV_Generator.png)
+| Check | Result |
+|---|---|
+| Target group health | ✅ Healthy |
+| ALB DNS reachable | ✅ |
+| CV generation | ✅ Successful |
+| JD match analysis | ✅ Returned score + missing keywords |
 
-**Cleanup:** terminated both EC2 instances, deleted the ALB and target group immediately after testing to avoid ongoing charges. Lambda, S3, DynamoDB, and API Gateway left running (near-zero idle cost).
+**🧹 Cleanup:** terminated both EC2 instances, deleted the ALB and target group immediately after testing to avoid ongoing charges. Lambda, S3, DynamoDB, and API Gateway left running (near-zero idle cost).
