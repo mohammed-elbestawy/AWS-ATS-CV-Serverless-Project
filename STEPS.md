@@ -178,6 +178,9 @@ Deployed to both EC2 instances via EC2 Instance Connect, running as a `systemd` 
 - ✅ Ran JD analyzer against a real job description → received match score + missing keywords
 
 ![Target group healthy](screenshots/16-target-healthy.png)
+
 ![Full end-to-end test result](screenshots/16-fulltest.png)
+
+![CV_Generator](screenshots/CV_Generator.png)
 
 **Cleanup:** terminated both EC2 instances, deleted the ALB and target group immediately after testing to avoid ongoing charges. Lambda, S3, DynamoDB, and API Gateway left running (near-zero idle cost).
