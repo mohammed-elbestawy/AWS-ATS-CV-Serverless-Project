@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 # 🛠️ Build Log — ATS CV Generator
 
 A step-by-step record of every resource created, exactly as configured, plus every real issue hit along the way.
@@ -6,26 +8,29 @@ A step-by-step record of every resource created, exactly as configured, plus eve
 
 | Step | Section |
 |---|---|
-| 1 | [🔑 Key Pair](#step-1--key-pair) |
-| 2 | [🌐 VPC](#step-2--vpc) |
-| 3 | [🧩 Subnets](#step-3--subnets) |
-| 4 | [🚪 Internet Gateway](#step-4--internet-gateway) |
-| 5 | [🗺️ Route Table](#step-5--route-table) |
-| 6 | [🛡️ Security Groups](#step-6--security-groups) |
-| 7 | [🖥️ EC2 Instances](#step-7--ec2-instances) |
-| 8 | [⚖️ Target Group & Load Balancer](#step-8--target-group--load-balancer) |
-| 9 | [🪣 S3 Bucket](#step-9--s3-bucket) |
-| 10 | [🗃️ DynamoDB Table](#step-10--dynamodb-table) |
-| 11 | [🔐 IAM Role & Policy](#step-11--iam-role--policy) |
-| 12 | [⚡ Lambda: CV Generator](#step-12--lambda-cv-generator) |
-| 13 | [⚡ Lambda: JD Analyzer](#step-13--lambda-jd-analyzer) |
-| 14 | [🔌 API Gateway](#step-14--api-gateway) |
-| 15 | [🚀 Flask Deployment](#step-15--flask-deployment) |
-| 16 | [✅ End-to-End Test](#step-16--end-to-end-test) |
+| 1 | [🔑 Key Pair](#step-1) |
+| 2 | [🌐 VPC](#step-2) |
+| 3 | [🧩 Subnets](#step-3) |
+| 4 | [🚪 Internet Gateway](#step-4) |
+| 5 | [🗺️ Route Table](#step-5) |
+| 6 | [🛡️ Security Groups](#step-6) |
+| 7 | [🖥️ EC2 Instances](#step-7) |
+| 8 | [⚖️ Target Group & Load Balancer](#step-8) |
+| 9 | [🪣 S3 Bucket](#step-9) |
+| 10 | [🗃️ DynamoDB Table](#step-10) |
+| 11 | [🔐 IAM Role & Policy](#step-11) |
+| 12 | [⚡ Lambda: CV Generator](#step-12) |
+| 13 | [⚡ Lambda: JD Analyzer](#step-13) |
+| 14 | [🔌 API Gateway](#step-14) |
+| 15 | [🚀 Flask Deployment](#step-15) |
+| 16 | [✅ End-to-End Test](#step-16) |
 
 ---
 
+<a id="step-1"></a>
 ## Step 1 — 🔑 Key Pair
+
+This key is the only way to log into the EC2 servers securely, instead of a password.
 
 | Setting | Value |
 |---|---|
@@ -37,7 +42,10 @@ A step-by-step record of every resource created, exactly as configured, plus eve
 
 ---
 
+<a id="step-2"></a>
 ## Step 2 — 🌐 VPC
+
+The VPC is the private network that every resource in this project lives inside, isolated from the rest of AWS.
 
 | Setting | Value |
 |---|---|
@@ -48,7 +56,10 @@ A step-by-step record of every resource created, exactly as configured, plus eve
 
 ---
 
+<a id="step-3"></a>
 ## Step 3 — 🧩 Subnets
+
+Split the network into two zones in two different physical locations (AZs), so if one location has a problem, the other keeps working.
 
 | Name | AZ | CIDR | Auto-assign public IPv4 |
 |---|---|---|---|
@@ -59,7 +70,10 @@ A step-by-step record of every resource created, exactly as configured, plus eve
 
 ---
 
+<a id="step-4"></a>
 ## Step 4 — 🚪 Internet Gateway
+
+This is the door that connects the network to the internet — without it, nothing outside could reach the servers.
 
 | Setting | Value |
 |---|---|
@@ -71,7 +85,10 @@ A step-by-step record of every resource created, exactly as configured, plus eve
 
 ---
 
+<a id="step-5"></a>
 ## Step 5 — 🗺️ Route Table
+
+This tells traffic leaving the network to go through the Internet Gateway to reach the internet.
 
 | Destination | Target |
 |---|---|
@@ -85,7 +102,10 @@ Associated with both public subnets.
 
 ---
 
+<a id="step-6"></a>
 ## Step 6 — 🛡️ Security Groups
+
+These are firewall rules — configured so the EC2 servers only accept traffic from the Load Balancer, not directly from the internet.
 
 **ALB security group** — `ats-alb-sg`
 
@@ -100,13 +120,16 @@ Associated with both public subnets.
 | Direction | Type | Port | Source |
 |---|---|---|---|
 | Inbound | HTTP | 80 | `ats-alb-sg` |
-| Inbound | SSH | 22 | Restricted — [see Step 15](#step-15--flask-deployment) |
+| Inbound | SSH | 22 | Restricted — [see Step 15](#step-15) |
 
 ![EC2 security group](screenshots/06-sg-ec2.png)
 
 ---
 
+<a id="step-7"></a>
 ## Step 7 — 🖥️ EC2 Instances
+
+These are the servers running the website (Flask app) — two of them, in two different zones, for availability.
 
 | Setting | Instance 1 | Instance 2 |
 |---|---|---|
@@ -131,7 +154,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-8"></a>
 ## Step 8 — ⚖️ Target Group & Load Balancer
+
+This distributes visitors across both servers, and makes sure each server is healthy before sending it traffic.
 
 | Setting | Value |
 |---|---|
@@ -143,7 +169,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-9"></a>
 ## Step 9 — 🪣 S3 Bucket
+
+This is where the generated CV files are stored.
 
 | Setting | Value |
 |---|---|
@@ -155,7 +184,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-10"></a>
 ## Step 10 — 🗃️ DynamoDB Table
+
+This is the database that stores each CV's data so it can be looked up later during analysis.
 
 | Setting | Value |
 |---|---|
@@ -168,7 +200,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-11"></a>
 ## Step 11 — 🔐 IAM Role & Policy
+
+These are the exact permissions the Lambda functions need — nothing more than what they actually use.
 
 | Setting | Value |
 |---|---|
@@ -204,7 +239,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-12"></a>
 ## Step 12 — ⚡ Lambda: CV Generator
+
+This function takes the form data, builds a CV file out of it, and saves it to S3.
 
 | Setting | Value |
 |---|---|
@@ -218,7 +256,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-13"></a>
 ## Step 13 — ⚡ Lambda: JD Analyzer
+
+This function compares the CV against a job description and returns a match score with missing keywords.
 
 | Setting | Value |
 |---|---|
@@ -232,7 +273,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-14"></a>
 ## Step 14 — 🔌 API Gateway
+
+This is the link that connects the website (Flask) to the Lambda functions.
 
 | Setting | Value |
 |---|---|
@@ -246,9 +290,10 @@ mkdir -p /home/ec2-user/ats-app/templates
 
 ---
 
+<a id="step-15"></a>
 ## Step 15 — 🚀 Flask Deployment
 
-Deployed to both EC2 instances via EC2 Instance Connect, running as a `systemd` service pointing to the API Gateway Invoke URL.
+This is where the actual website code was uploaded to the servers and set to keep running continuously.
 
 ### 🐛 Issues Hit & Fixed
 
@@ -261,7 +306,10 @@ Deployed to both EC2 instances via EC2 Instance Connect, running as a `systemd` 
 
 ---
 
+<a id="step-16"></a>
 ## Step 16 — ✅ End-to-End Test
+
+A final check to confirm everything works together, from start to finish.
 
 1. Opened the ALB DNS name in the browser.
 2. Filled in the form with sample details and generated a CV — got a success message with a download link.
@@ -283,6 +331,6 @@ Deployed to both EC2 instances via EC2 Instance Connect, running as a `systemd` 
 
 <div align="center">
 
-**[⬆ Back to top](#-build-log--ats-cv-generator)**
+**[⬆ Back to top](#top)**
 
 </div>
