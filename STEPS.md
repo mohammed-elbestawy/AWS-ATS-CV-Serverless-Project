@@ -38,8 +38,6 @@ This key is the only way to log into the EC2 servers securely, instead of a pass
 | Type | RSA |
 | Format | .pem |
 
-![Key pair](screenshots/01-keypair.png)
-
 ---
 
 <a id="step-2"></a>
@@ -51,8 +49,6 @@ The VPC is the private network that every resource in this project lives inside,
 |---|---|
 | Name | `ats-cv-vpc` |
 | IPv4 CIDR | `10.0.0.0/16` |
-
-![VPC](screenshots/02-vpc.png)
 
 ---
 
@@ -81,8 +77,6 @@ This is the door that connects the network to the internet — without it, nothi
 | Attached VPC | `ats-cv-vpc` |
 | State | Attached |
 
-![Internet gateway](screenshots/04-igw.png)
-
 ---
 
 <a id="step-5"></a>
@@ -98,7 +92,6 @@ This tells traffic leaving the network to go through the Internet Gateway to rea
 Associated with both public subnets.
 
 ![Route table](screenshots/05-route-table.png)
-![Route table associations](screenshots/05-route-table-associations.png)
 
 ---
 
@@ -180,8 +173,6 @@ This is where the generated CV files are stored.
 | Region | us-east-1 |
 | Public access | Blocked |
 
-![S3 bucket](screenshots/09-s3.png)
-
 ---
 
 <a id="step-10"></a>
@@ -194,9 +185,6 @@ This is the database that stores each CV's data so it can be looked up later dur
 | Name | `ats-cv-records` |
 | Partition key | `cv_id` (String) |
 | Capacity mode | On-demand |
-
-![DynamoDB table](screenshots/10-dynamodb.png)
-![DynamoDB empty items](screenshots/10-dynamodb-items.png)
 
 ---
 
@@ -234,7 +222,6 @@ These are the exact permissions the Lambda functions need — nothing more than 
 }
 ```
 
-![IAM policy](screenshots/11-iam-policy.png)
 ![IAM role](screenshots/11-iam-role.png)
 
 ---
@@ -252,7 +239,7 @@ This function takes the form data, builds a CV file out of it, and saves it to S
 | Env vars | `BUCKET_NAME`, `TABLE_NAME` |
 | Timeout / Memory | 30s / 256MB |
 
-![Lambda generator config](screenshots/12-lambda-generator.png)
+Full code: [`code/lambda_generator/lambda_function.py`](code/lambda_generator/lambda_function.py)
 
 ---
 
@@ -268,8 +255,7 @@ This function compares the CV against a job description and returns a match scor
 | Role | `ats-lambda-role` |
 | Env var | `TABLE_NAME` |
 
-![Lambda analyzer code](screenshots/13-lambda-analyzer-code.png)
-![Lambda analyzer config](screenshots/13-lambda-analyzer.png)
+Full code: [`code/lambda_analyzer/lambda_function.py`](code/lambda_analyzer/lambda_function.py)
 
 ---
 
@@ -285,7 +271,6 @@ This is the link that connects the website (Flask) to the Lambda functions.
 | Integration | Lambda proxy + CORS enabled |
 | Stage | `prod` |
 
-![API Gateway resources](screenshots/14-apigateway-resources.png)
 ![API Gateway invoke URL](screenshots/14-apigateway-invoke.png)
 
 ---
@@ -315,8 +300,9 @@ A final check to confirm everything works together, from start to finish.
 2. Filled in the form with sample details and generated a CV — got a success message with a download link.
 3. Pasted a job description ("Cloud Security Operations") and checked the match score.
 
-![CV generation form filled and submitted](screenshots/16-cv-form-filled.png)
 ![JD match result — score and missing keywords](screenshots/16-fulltest.png)
+
+![CV generation form filled and submitted](screenshots/16-cv-form-filled.png)
 
 | Check | Result |
 |---|---|
