@@ -90,6 +90,14 @@ This project intentionally trades some production-grade practices for learning b
 - **Private subnets** — move EC2 instances out of public subnets behind a NAT Gateway, so only the ALB is internet-facing
 - **Auto Scaling Group** — replace the two fixed EC2 instances with a scaling group for true self-healing capacity
 
+## Key Lessons
+
+- A working architecture on paper can still fail during deployment.
+- Security groups and network access need to be understood beyond simply opening ports.
+- Cloud troubleshooting often requires checking logs at multiple layers.
+- High availability and scalability are different concepts.
+- Cost management is part of cloud architecture, not something to consider afterward.
+
 ## Cost Management
 
 EC2 instances and the Application Load Balancer were terminated immediately after validating the full flow, to avoid unnecessary charges on billable resources. Lambda, S3, DynamoDB, and API Gateway were left running since their idle cost is effectively zero.
