@@ -1,6 +1,6 @@
 # 🎯 ATS CV Generator — Serverless AWS Project
 
-> Cloud-native AWS architecture for an ATS-optimized CV generator, combining EC2, ALB, Lambda, S3, DynamoDB, API Gateway, VPC, and IAM.
+> A cloud-native AWS application that generates ATS-friendly CVs and analyzes their compatibility with job descriptions using a multi-tier architecture across EC2, ALB, API Gateway, Lambda, S3, DynamoDB, IAM, and VPC.
 
 ![AWS](https://img.shields.io/badge/AWS-Free%20Tier-FF9900?style=flat&logo=amazonaws&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white)
