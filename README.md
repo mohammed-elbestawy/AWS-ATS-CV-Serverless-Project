@@ -47,8 +47,8 @@ Region: `us-east-1`
 - **JD Match Analysis** — pastes any job description → gets a match score, missing keywords, and improvement suggestions
 - **High Availability** — two EC2 instances across two AZs behind a load balancer
 - **Serverless Logic** — Lambda functions handle generation/analysis with zero server management
-- **Least-Privilege Security** — no wildcard IAM permissions anywhere in the stack
-
+- **Least-Privilege Security** — IAM permissions scoped to the required actions and project resources, with wildcard usage limited to cases where AWS resource patterns require it
+  
 ## Live Test Result
 
 Successfully generated a CV, stored it in S3, and ran the JD analyzer end-to-end — returned a real match score with missing-keyword suggestions against an actual job description.
