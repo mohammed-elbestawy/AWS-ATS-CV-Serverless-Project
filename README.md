@@ -28,6 +28,15 @@ Every component below — networking, compute, security groups, IAM permissions 
 
 ![Architecture Diagram](screenshots/architecture-diagram.png)
 
+
+- 1. User submits data through the Flask web application.
+- 2. Traffic reaches the Application Load Balancer.
+- 3. The ALB forwards the request to one of two EC2 instances.
+- 4. The Flask application calls API Gateway.
+- 5. API Gateway invokes the appropriate Lambda function.
+- 6. Lambda stores generated CVs in S3 and CV records in DynamoDB.
+- 7. The application returns the result to the user.
+
 | Layer | Service | Purpose |
 |---|---|---|
 | Networking | VPC, Subnets, IGW, Route Table | Isolated network foundation across 2 Availability Zones |
